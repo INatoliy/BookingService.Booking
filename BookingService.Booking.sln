@@ -12,17 +12,41 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Api"
 		{DFF79859-C567-471E-A4BD-997A9C84B5DB} = {DFF79859-C567-471E-A4BD-997A9C84B5DB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Api.Contracts", "src\BookingService.Booking.Api.Contracts\BookingService.Booking.Api.Contracts.csproj", "{5117A0B7-3292-412C-9903-82CCB179BFEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Api.Contracts", "src\BookingService.Booking.Api.Contracts\BookingService.Booking.Api.Contracts.csproj", "{5117A0B7-3292-412C-9903-82CCB179BFEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BB60A58-E201-42AD-B562-D887F496AE7F} = {1BB60A58-E201-42AD-B562-D887F496AE7F}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Application", "src\BookingService.Booking.Application\BookingService.Booking.Application.csproj", "{DFF79859-C567-471E-A4BD-997A9C84B5DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Application", "src\BookingService.Booking.Application\BookingService.Booking.Application.csproj", "{DFF79859-C567-471E-A4BD-997A9C84B5DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1BB60A58-E201-42AD-B562-D887F496AE7F} = {1BB60A58-E201-42AD-B562-D887F496AE7F}
+		{390B4540-7590-453D-92C9-6D0352357EC3} = {390B4540-7590-453D-92C9-6D0352357EC3}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Application.Contracts", "src\BookingService.Booking.Application.Contracts\BookingService.Booking.Application.Contracts.csproj", "{1BB60A58-E201-42AD-B562-D887F496AE7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Application.Contracts", "src\BookingService.Booking.Application.Contracts\BookingService.Booking.Application.Contracts.csproj", "{1BB60A58-E201-42AD-B562-D887F496AE7F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A12968F0-4123-40BB-A53B-D2BB29508EEF} = {A12968F0-4123-40BB-A53B-D2BB29508EEF}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Domain", "src\BookingService.Booking.Domain\BookingService.Booking.Domain.csproj", "{390B4540-7590-453D-92C9-6D0352357EC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Domain", "src\BookingService.Booking.Domain\BookingService.Booking.Domain.csproj", "{390B4540-7590-453D-92C9-6D0352357EC3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A12968F0-4123-40BB-A53B-D2BB29508EEF} = {A12968F0-4123-40BB-A53B-D2BB29508EEF}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Domain.Contracts", "src\BookingService.Booking.Domain.Contracts\BookingService.Booking.Domain.Contracts.csproj", "{A12968F0-4123-40BB-A53B-D2BB29508EEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Domain.Contracts", "src\BookingService.Booking.Domain.Contracts\BookingService.Booking.Domain.Contracts.csproj", "{A12968F0-4123-40BB-A53B-D2BB29508EEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingService.Booking.Persistense", "src\BookingService.Booking.Persistense\BookingService.Booking.Persistense.csproj", "{2176658E-3DB8-44C2-A420-B33E2926519C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Persistence", "src\BookingService.Booking.Persistence\BookingService.Booking.Persistence.csproj", "{2176658E-3DB8-44C2-A420-B33E2926519C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A12968F0-4123-40BB-A53B-D2BB29508EEF} = {A12968F0-4123-40BB-A53B-D2BB29508EEF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4BB71CE9-2FC3-4923-BEDD-7CCEA22161E8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingService.Booking.Domain.UnitTests", "src\tests\BookingService.Booking.Domain.UnitTests\BookingService.Booking.Domain.UnitTests.csproj", "{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{390B4540-7590-453D-92C9-6D0352357EC3} = {390B4540-7590-453D-92C9-6D0352357EC3}
+		{A12968F0-4123-40BB-A53B-D2BB29508EEF} = {A12968F0-4123-40BB-A53B-D2BB29508EEF}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +82,10 @@ Global
 		{2176658E-3DB8-44C2-A420-B33E2926519C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2176658E-3DB8-44C2-A420-B33E2926519C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2176658E-3DB8-44C2-A420-B33E2926519C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +98,7 @@ Global
 		{390B4540-7590-453D-92C9-6D0352357EC3} = {B4E14374-7365-410E-AF4A-9ABC7AE0334C}
 		{A12968F0-4123-40BB-A53B-D2BB29508EEF} = {B4E14374-7365-410E-AF4A-9ABC7AE0334C}
 		{2176658E-3DB8-44C2-A420-B33E2926519C} = {B4E14374-7365-410E-AF4A-9ABC7AE0334C}
+		{6AADC29A-9D6B-4AED-BA73-BB3DB16A52A8} = {4BB71CE9-2FC3-4923-BEDD-7CCEA22161E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EF7A7EEE-BA0C-45C6-9E5B-9BF0A2235F06}
