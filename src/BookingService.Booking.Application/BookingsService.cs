@@ -1,5 +1,4 @@
 ﻿using BookingService.Booking.Application.Contracts.Commands;
-using BookingService.Booking.Application.Contracts.Exceptions;
 using BookingService.Booking.Application.Contracts.Interfaces;
 using BookingService.Booking.Application.Contracts.Models;
 using BookingService.Booking.Application.Contracts.Queries;
@@ -7,7 +6,6 @@ using BookingService.Booking.Application.Dates;
 using BookingService.Booking.Domain;
 using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Domain.Contracts.Models;
-using System.ComponentModel.DataAnnotations;
 using ValidationException = BookingService.Booking.Application.Contracts.Exceptions.ValidationException;
 
 namespace BookingService.Booking.Application;

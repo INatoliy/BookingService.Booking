@@ -1,8 +1,6 @@
 ﻿using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace BookingService.Booking.Persistence;
 

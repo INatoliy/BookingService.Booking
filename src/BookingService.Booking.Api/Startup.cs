@@ -1,11 +1,9 @@
 ﻿using BookingService.Booking.Application;
-using BookingService.Booking.Application.Contracts.Exceptions;
 using BookingService.Booking.Domain.Contracts.Exceptions;
 using BookingService.Booking.Persistence;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using System.ComponentModel.DataAnnotations;
 using ValidationException = BookingService.Booking.Application.Contracts.Exceptions.ValidationException;
 
 namespace BookingService.Booking.Api;

@@ -1,7 +1,6 @@
 ﻿using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Domain.Contracts.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace BookingService.Booking.Persistence;
 
