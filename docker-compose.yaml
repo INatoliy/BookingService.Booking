@@ -1,0 +1,112 @@
+﻿name: mypetproject
+services:
+  booking-service_bookings-host:
+    container_name: bookings-api
+    build:
+      context: .
+      dockerfile: src/BookingService.Booking.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__BookingsContext=Host=booking-service_bookings-db;Port=5432;Database=booking_service_bookings;Username=bookings_admin;Password=admin_bookings
+      - BookingCatalogRestOptions__BaseAddress=http://catalog-host:8080
+    networks:
+      - booking-network
+      
+  booking-service_bookings-db:
+    image: postgres:latest
+    container_name: bookings-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: bookings
+      POSTGRES_USER: bookings_admin
+      POSTGRES_PASSWORD: admin_bookings
+      PGDATA: /data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookings_admin -d bookings"]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - booking-db-data:/data/postgres
+    networks:
+      - booking-network
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 5s
+      timeout: 10s
+      retries: 3
+    networks:
+      - booking-network
+
+
+  catalog-db:
+    image: postgres:latest
+    container_name: catalog-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "booking_service_catalog"
+      POSTGRES_USER: "catalog_admin"
+      POSTGRES_PASSWORD: "admin_catalog"
+      PGDATA: /data/postgres
+    healthcheck:
+      test: pg_isready -U catalog_admin -d booking_service_catalog
+      interval: 5s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - catalog-db-data:/data/postgres
+    networks:
+      - booking-network
+
+  catalog-migrations:
+    container_name: catalog-migrations
+    image: ghcr.io/nazarovsa-mentorship/pet-booking-service-catalog/catalog-migrations:2.1.2
+    platform: linux/amd64
+    environment:
+      DOTNET_ENVIRONMENT: Production
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+    networks:
+      - booking-network
+
+  catalog-host:
+    container_name: catalog-host
+    image: ghcr.io/nazarovsa-mentorship/pet-booking-service-catalog/catalog-host:2.1.2
+    platform: linux/amd64
+    ports:
+      - "8000:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+      catalog-migrations:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - booking-network
+
+
+volumes:
+  booking-db-data:
+  catalog-db-data:
+
+networks:
+  booking-network:
+    driver: bridge
