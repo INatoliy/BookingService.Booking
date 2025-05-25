@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BookingService.Booking.Api": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
