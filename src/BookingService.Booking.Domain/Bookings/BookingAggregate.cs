@@ -26,6 +26,7 @@ public class BookingAggregate
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public Guid CatalogRequestId { get; private set; }
 
     public static BookingAggregate Initialize(long userId, long resourceId, DateOnly startDate, DateOnly endDate,
         DateTimeOffset now)
@@ -49,4 +50,12 @@ public class BookingAggregate
         if (Status == BookingStatus.Cancelled) throw new DomainException("Бронирование уже отменено");
         Status = BookingStatus.Cancelled;
     }
+
+    public void SetCatalogRequestId(Guid catalogRequestId)
+    {
+        if (catalogRequestId == Guid.Empty) throw new DomainException("CatalogRequestId не может быть пустым");
+
+        CatalogRequestId = catalogRequestId;
+    }
+
 }
