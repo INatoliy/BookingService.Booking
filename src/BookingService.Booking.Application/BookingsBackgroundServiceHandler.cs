@@ -32,16 +32,13 @@ namespace BookingService.Booking.Application
 
             foreach (var booking in bookings)
             {
-                // тут тоже не понимаю нужна ли эта проверка, оптимизирует ли она вообще?
-                if (booking.CatalogRequestId == null) continue;
-
                 try
                 {
                     var query = new GetBookingJobStatusByRequestIdQuery
                     {
                         RequestId = booking.CatalogRequestId
                     };
-                    var status = await _bookingJobsController.GetBookingJobStatusByRequestId(query);
+                    var status = await _bookingJobsController.GetBookingJobStatusByRequestId(query, cancellationToken);
 
 
                     if (status == BookingJobStatus.Confirmed) booking.Confirm();
@@ -51,7 +48,7 @@ namespace BookingService.Booking.Application
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Ошибка при обработке бронирования {booking.Id}");
+                    _logger.LogError(ex, $"Ошибка при обработке бронирования: ID {booking.Id}");
                 }
             }
         }

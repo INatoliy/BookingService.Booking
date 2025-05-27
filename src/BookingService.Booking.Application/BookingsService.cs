@@ -102,13 +102,16 @@ internal class BookingsService : IBookingsService
     public async Task<BookingStatus> GetStatusByIdAsync(GetBookingStatusByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) ?? throw new ValidationException("Бронирование не найдено.");
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+            ?? throw new ValidationException("Бронирование не найдено.");
+
         return booking.Status;
     }
     public async Task<BookingDto> GetByIdAsync(GetBookingByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) ?? throw new ValidationException("Бронирование не найдено.");
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+            ?? throw new ValidationException("Бронирование не найдено.");
 
         return new BookingDto
         {
