@@ -2,6 +2,6 @@
 {
     class BookingCatalogRestOptions
     {
-        public string BaseAdress { get; set; }
+        public string BaseAddress { get; set; }
     }
 }

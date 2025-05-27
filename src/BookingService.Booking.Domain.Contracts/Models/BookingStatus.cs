@@ -2,7 +2,7 @@
 
 public enum BookingStatus
 {
-    AwaitsConfirmation, // Ожидает подтверждения
-    Confirmed, // Подтверждено 
-    Cancelled // Отменено 
+    AwaitsConfirmation = 0, // Ожидает подтверждения
+    Confirmed = 1, // Подтверждено 
+    Cancelled = 2 // Отменено 
 }
