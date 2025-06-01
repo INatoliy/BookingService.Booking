@@ -9,7 +9,12 @@ public class BookingAggregate
     {
     }
 
-    private BookingAggregate(long userId, long resourceId, DateOnly startDate, DateOnly endDate, DateTimeOffset now)
+    private BookingAggregate(
+        long userId,
+        long resourceId, 
+        DateOnly startDate, 
+        DateOnly endDate,
+        DateTimeOffset now)
     {
         Status = BookingStatus.AwaitsConfirmation;
         UserId = userId;
@@ -28,7 +33,11 @@ public class BookingAggregate
     public DateTimeOffset CreatedAt { get; set; }
     public Guid CatalogRequestId { get; private set; }
 
-    public static BookingAggregate Initialize(long userId, long resourceId, DateOnly startDate, DateOnly endDate,
+    public static BookingAggregate Initialize(
+        long userId, 
+        long resourceId, 
+        DateOnly startDate, 
+        DateOnly endDate,
         DateTimeOffset now)
     {
         if (userId <= 0) throw new DomainException("Индетификатор пользовотеля должен быть больше 0.");
