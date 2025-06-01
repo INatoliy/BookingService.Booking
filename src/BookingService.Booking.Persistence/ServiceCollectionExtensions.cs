@@ -15,6 +15,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IBookingsRepository, BookingsRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IBookingsBackgroundQueries, BookingsBackgroundQueries>();
 
         services.AddDbContext<BookingsContext>((ctx, context) =>
         {

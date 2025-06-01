@@ -1,4 +1,5 @@
 ﻿using BookingService.Booking.Application.Contracts.Commands;
+using BookingService.Booking.Application.Contracts.Exceptions;
 using BookingService.Booking.Application.Contracts.Interfaces;
 using BookingService.Booking.Application.Contracts.Models;
 using BookingService.Booking.Application.Contracts.Queries;
@@ -6,7 +7,8 @@ using BookingService.Booking.Application.Dates;
 using BookingService.Booking.Domain;
 using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Domain.Contracts.Models;
-using ValidationException = BookingService.Booking.Application.Contracts.Exceptions.ValidationException;
+using BookingService.Catalog.Api.Contracts.BookingJobs;
+using BookingService.Catalog.Api.Contracts.BookingJobs.Commands;
 
 namespace BookingService.Booking.Application;
 
@@ -15,14 +17,17 @@ internal class BookingsService : IBookingsService
     private readonly ICurrentDateTimeProvider _currentDateTimeProvider;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBookingsRepository _bookingsRepository;
+    private readonly IBookingJobsController _bookingJobsController;
     public BookingsService(
         IUnitOfWork unitOfWork,
         ICurrentDateTimeProvider currentDateTimeProvider,
-        IBookingsRepository bookingsRepository)
+        IBookingsRepository bookingsRepository,
+        IBookingJobsController bookingJobsController)
     {
         _unitOfWork = unitOfWork;
         _currentDateTimeProvider = currentDateTimeProvider;
         _bookingsRepository = bookingsRepository;
+        _bookingJobsController = bookingJobsController;
     }
     public async Task<long> CreateBookingAsync(CreateBookingCommand command,
         CancellationToken cancellationToken)
@@ -33,6 +38,18 @@ internal class BookingsService : IBookingsService
             command.StartDate,
             command.EndDate,
             _currentDateTimeProvider.UtcNow);
+
+        var catalogRequestId = Guid.NewGuid();
+        var catalogCommand = new CreateBookingJobCommand()
+        {
+            RequestId = catalogRequestId,
+            ResourceId = command.ResourceId,
+            StartDate = command.StartDate,
+            EndDate = command.EndDate
+        };
+        // вот тут надо понять куда записывать то что он возвращает
+        await _bookingJobsController.CreateBookingJob(catalogCommand, cancellationToken);
+        booking.SetCatalogRequestId(catalogRequestId);
 
         await _bookingsRepository.CreateAsync(booking, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
@@ -46,6 +63,13 @@ internal class BookingsService : IBookingsService
 
         if (booking == null || booking.Id <= 0) throw new ValidationException("Не удалось найти бронирование.");
 
+        var catalogCommand = new CancelBookingJobByRequestIdCommand()
+        {
+            RequestId = booking.CatalogRequestId
+        };
+        if (catalogCommand.RequestId != null) _bookingJobsController.CancelBookingJob(catalogCommand, cancellationToken);
+
+        booking.Cancel();
         await _bookingsRepository.UpdateAsync(booking, cancellationToken);
         await _unitOfWork.CommitAsync(cancellationToken);
     }
@@ -78,13 +102,16 @@ internal class BookingsService : IBookingsService
     public async Task<BookingStatus> GetStatusByIdAsync(GetBookingStatusByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) ?? throw new ValidationException("Бронирование не найдено.");
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+            ?? throw new ValidationException("Бронирование не найдено.");
+
         return booking.Status;
     }
     public async Task<BookingDto> GetByIdAsync(GetBookingByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) ?? throw new ValidationException("Бронирование не найдено.");
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+            ?? throw new ValidationException("Бронирование не найдено.");
 
         return new BookingDto
         {

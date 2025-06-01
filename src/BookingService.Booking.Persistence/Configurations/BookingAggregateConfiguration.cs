@@ -19,5 +19,6 @@ public class BookingAggregateConfiguration : IEntityTypeConfiguration<BookingAgg
         builder.Property(x => x.StartDate).HasColumnName("start_date");
         builder.Property(x => x.EndDate).HasColumnName("end_date");
         builder.Property(x => x.CreatedAt).HasColumnName("created_at_date_time");
+        builder.Property(x => x.CatalogRequestId).HasColumnName("catalog_request_id");
     }
 }
