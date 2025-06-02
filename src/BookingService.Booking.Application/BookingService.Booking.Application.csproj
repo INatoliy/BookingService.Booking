@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="BookingService.Catalog.Api.Contracts" Version="2.1.2" />
 		<PackageReference Include="BookingService.Catalog.Async.Api.Contracts" Version="2.1.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />

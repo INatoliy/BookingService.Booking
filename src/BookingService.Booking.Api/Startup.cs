@@ -2,9 +2,14 @@
 using BookingService.Booking.Application.Contracts.Exceptions;
 using BookingService.Booking.Domain.Contracts.Exceptions;
 using BookingService.Booking.Persistence;
+using BookingService.Catalog.Async.Api.Contracts.Events;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Rebus.Bus;
+using Rebus.Config;
+using Rebus.Routing.TypeBased;
+using Rebus.Serialization.Json;
 
 namespace BookingService.Booking.Api;
 
@@ -23,7 +28,15 @@ public class Startup
 
         var connectionString = Configuration.GetConnectionString("BookingsContext");
         services.AddPersistence(connectionString);
-        services.AddHostedService<BookingsBackgroundService>();
+
+        services.AddRebus(configure =>
+        configure.Transport(t => t.UseRabbitMq("amqp://admin:admin@localhost:5672/", "domain-service-queue")
+        .DefaultQueueOptions(queue => queue.SetDurable(true))
+        .ExchangeNames("domain-service-direct", "domain-topics"))
+        .Serialization(s => s.UseSystemTextJson())
+        .Logging(l => l.Serilog())
+        .Routing(r => r.TypeBased()));
+
         services.AddSwaggerGen(s =>
         {
             s.SwaggerDoc("v1", new OpenApiInfo
@@ -60,6 +73,13 @@ public class Startup
             app.UseExceptionHandler("/error");
 
         app.UseStatusCodePages();
+
+        app.ApplicationServices
+            .GetRequiredService<IBus>()
+            .Subscribe<BookingJobConfirmed>();
+        app.ApplicationServices
+            .GetRequiredService<IBus>()
+            .Subscribe<BookingJobDenied>();
 
         app.UseSwagger();
         app.UseSwaggerUI(options =>
