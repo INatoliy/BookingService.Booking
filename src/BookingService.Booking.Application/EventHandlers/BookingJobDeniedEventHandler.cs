@@ -5,7 +5,7 @@ using Rebus.Handlers;
 
 namespace BookingService.Booking.Application.EventHandlers
 {
-    class BookingJobDeniedEventHandler : IHandleMessages<BookingJobDenied>
+    public class BookingJobDeniedEventHandler : IHandleMessages<BookingJobDenied>
     {
         private readonly IBookingsBackgroundQueries _bookingsBackgroundQueries;
         private readonly IUnitOfWork _unitOfWork;

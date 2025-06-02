@@ -5,7 +5,7 @@ using Rebus.Handlers;
 
 namespace BookingService.Booking.Application.EventHandlers
 {
-    class BookingJobConfirmedEventHandler : IHandleMessages<BookingJobConfirmed>
+    public class BookingJobConfirmedEventHandler : IHandleMessages<BookingJobConfirmed>
     {
         private readonly IBookingsBackgroundQueries _bookingsBackgroundQueries;
         private readonly IUnitOfWork _unitOfWork;

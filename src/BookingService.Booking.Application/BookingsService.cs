@@ -128,9 +128,4 @@ internal class BookingsService : IBookingsService
             CreatedAt = booking.CreatedAt
         };
     }
-
-
-
-
-
 }
