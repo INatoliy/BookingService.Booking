@@ -7,27 +7,26 @@ using BookingService.Booking.Application.Dates;
 using BookingService.Booking.Domain;
 using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Domain.Contracts.Models;
-using BookingService.Catalog.Api.Contracts.BookingJobs;
-using BookingService.Catalog.Api.Contracts.BookingJobs.Commands;
+using BookingService.Catalog.Async.Api.Contracts.Requests;
+using Rebus.Bus;
 
 namespace BookingService.Booking.Application;
-
 internal class BookingsService : IBookingsService
 {
     private readonly ICurrentDateTimeProvider _currentDateTimeProvider;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IBookingsRepository _bookingsRepository;
-    private readonly IBookingJobsController _bookingJobsController;
+    private readonly IBus _bus;
     public BookingsService(
         IUnitOfWork unitOfWork,
         ICurrentDateTimeProvider currentDateTimeProvider,
         IBookingsRepository bookingsRepository,
-        IBookingJobsController bookingJobsController)
+        IBus bus)
     {
         _unitOfWork = unitOfWork;
         _currentDateTimeProvider = currentDateTimeProvider;
         _bookingsRepository = bookingsRepository;
-        _bookingJobsController = bookingJobsController;
+        _bus = bus;
     }
     public async Task<long> CreateBookingAsync(CreateBookingCommand command,
         CancellationToken cancellationToken)
@@ -39,16 +38,18 @@ internal class BookingsService : IBookingsService
             command.EndDate,
             _currentDateTimeProvider.UtcNow);
 
+        var catalogEventId = Guid.NewGuid();
         var catalogRequestId = Guid.NewGuid();
-        var catalogCommand = new CreateBookingJobCommand()
+        var catalogRequest = new CreateBookingJobRequest()
         {
+            EventId = catalogEventId,
             RequestId = catalogRequestId,
             ResourceId = command.ResourceId,
             StartDate = command.StartDate,
             EndDate = command.EndDate
         };
-        // вот тут надо понять куда записывать то что он возвращает
-        await _bookingJobsController.CreateBookingJob(catalogCommand, cancellationToken);
+
+        await _bus.Publish(catalogRequest);
         booking.SetCatalogRequestId(catalogRequestId);
 
         await _bookingsRepository.CreateAsync(booking, cancellationToken);
@@ -63,11 +64,14 @@ internal class BookingsService : IBookingsService
 
         if (booking == null || booking.Id <= 0) throw new ValidationException("Не удалось найти бронирование.");
 
-        var catalogCommand = new CancelBookingJobByRequestIdCommand()
+        var catalogEventId = Guid.NewGuid();
+        var catalogCommand = new CancelBookingJobByRequestIdRequest()
         {
+            EventId = catalogEventId,
             RequestId = booking.CatalogRequestId
         };
-        if (catalogCommand.RequestId != null) _bookingJobsController.CancelBookingJob(catalogCommand, cancellationToken);
+
+        await _bus.Publish(catalogCommand);
 
         booking.Cancel();
         await _bookingsRepository.UpdateAsync(booking, cancellationToken);
@@ -102,7 +106,7 @@ internal class BookingsService : IBookingsService
     public async Task<BookingStatus> GetStatusByIdAsync(GetBookingStatusByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken)
             ?? throw new ValidationException("Бронирование не найдено.");
 
         return booking.Status;
@@ -110,7 +114,7 @@ internal class BookingsService : IBookingsService
     public async Task<BookingDto> GetByIdAsync(GetBookingByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken)
             ?? throw new ValidationException("Бронирование не найдено.");
 
         return new BookingDto
@@ -124,9 +128,4 @@ internal class BookingsService : IBookingsService
             CreatedAt = booking.CreatedAt
         };
     }
-
-
-
-
-
 }

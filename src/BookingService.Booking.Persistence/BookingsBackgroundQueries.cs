@@ -1,6 +1,5 @@
 ﻿using BookingService.Booking.Domain;
 using BookingService.Booking.Domain.Bookings;
-using BookingService.Booking.Domain.Contracts.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookingService.Booking.Persistence
@@ -12,16 +11,11 @@ namespace BookingService.Booking.Persistence
         {
             _context = context;
         }
-
-        public async Task<IReadOnlyCollection<BookingAggregate>> GetConfirmationAwaitingBookingsAsync
-            (CancellationToken cancellationToken, int limit = 10)
+        public async Task<BookingAggregate?> GetBookingByRequestIdAsync(Guid requestId, CancellationToken cancellationToken)
         {
             return await _context.Bookings
                 .AsNoTracking()
-                .Where(x => x.Status == BookingStatus.AwaitsConfirmation)
-                .OrderBy(x => x.Id)
-                .Take(limit)
-                .ToListAsync();
+                .FirstOrDefaultAsync(x => x.CatalogRequestId == requestId);
 
         }
     }

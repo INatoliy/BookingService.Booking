@@ -4,6 +4,6 @@ namespace BookingService.Booking.Domain
 {
     public interface IBookingsBackgroundQueries
     {
-        Task<IReadOnlyCollection<BookingAggregate>> GetConfirmationAwaitingBookingsAsync(CancellationToken cancellationToken, int limit = 10);
+        Task<BookingAggregate?> GetBookingByRequestIdAsync(Guid requestId, CancellationToken cancellationToken = default);
     }
 }
