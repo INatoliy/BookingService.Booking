@@ -1,9 +1,10 @@
-﻿using BookingService.Booking.Domain;
-using BookingService.Booking.Domain.Bookings;
-using BookingService.Booking.Domain.Contracts.Models;
+﻿using BookingService.Booking.Domain.Contracts.Models;
+using BookingService.Booking.Domain.Entities;
+using BookingService.Booking.Domain.Interfaces;
+using BookingService.Booking.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookingService.Booking.Persistence
+namespace BookingService.Booking.Persistence.Repositories
 {
     class BookingsBackgroundQueries : IBookingsBackgroundQueries
     {

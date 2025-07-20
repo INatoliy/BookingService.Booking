@@ -1,6 +1,7 @@
-﻿using BookingService.Booking.Domain;
+﻿using BookingService.Booking.Domain.Interfaces;
+using BookingService.Booking.Persistence.Contexts;
 
-namespace BookingService.Booking.Persistence;
+namespace BookingService.Booking.Persistence.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {

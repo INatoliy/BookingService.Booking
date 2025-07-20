@@ -1,4 +1,4 @@
-﻿using BookingService.Booking.Application;
+﻿using BookingService.Booking.Application.Services;
 
 namespace BookingService.Booking.Api
 {

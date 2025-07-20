@@ -1,5 +1,6 @@
-﻿using BookingService.Booking.Domain;
-using BookingService.Booking.Domain.Bookings;
+﻿using BookingService.Booking.Domain.Interfaces;
+using BookingService.Booking.Persistence.Contexts;
+using BookingService.Booking.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

@@ -1,4 +1,4 @@
-﻿namespace BookingService.Booking.Domain;
+﻿namespace BookingService.Booking.Domain.Interfaces;
 
 public interface IUnitOfWork
 {

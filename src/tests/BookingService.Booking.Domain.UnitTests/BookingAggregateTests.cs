@@ -1,6 +1,6 @@
-﻿using BookingService.Booking.Domain.Bookings;
-using BookingService.Booking.Domain.Contracts.Exceptions;
+﻿using BookingService.Booking.Domain.Contracts.Exceptions;
 using BookingService.Booking.Domain.Contracts.Models;
+using BookingService.Booking.Domain.Entities;
 
 namespace BookingService.Booking.Domain.UnitTests;
 

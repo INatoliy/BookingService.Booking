@@ -1,6 +1,6 @@
-﻿using BookingService.Booking.Domain.Bookings;
+﻿using BookingService.Booking.Domain.Entities;
 
-namespace BookingService.Booking.Domain
+namespace BookingService.Booking.Domain.Interfaces
 {
     public interface IBookingsBackgroundQueries
     {

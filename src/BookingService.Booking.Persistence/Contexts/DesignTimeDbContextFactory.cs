@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace BookingService.Booking.Persistence;
+namespace BookingService.Booking.Persistence.Contexts;
 
 internal class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<BookingsContext>
 {

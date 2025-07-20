@@ -1,9 +1,10 @@
-﻿using BookingService.Booking.Application;
-using BookingService.Booking.Application.Contracts.Exceptions;
-using BookingService.Booking.Domain.Contracts.Exceptions;
+﻿using BookingService.Booking.Application.Contracts.Exceptions;
+using BookingService.Booking.Application;
 using BookingService.Booking.Persistence;
+using BookingService.Booking.Domain.Contracts.Exceptions;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 namespace BookingService.Booking.Api;
@@ -18,6 +19,14 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
+        {
+            options.
+        })
         services.AddControllers();
         services.AddApplication(Configuration);
 

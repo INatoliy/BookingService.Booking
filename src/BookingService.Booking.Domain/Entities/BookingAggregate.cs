@@ -1,7 +1,7 @@
 ﻿using BookingService.Booking.Domain.Contracts.Exceptions;
 using BookingService.Booking.Domain.Contracts.Models;
 
-namespace BookingService.Booking.Domain.Bookings;
+namespace BookingService.Booking.Domain.Entities;
 
 public class BookingAggregate
 {
@@ -11,8 +11,8 @@ public class BookingAggregate
 
     private BookingAggregate(
         long userId,
-        long resourceId, 
-        DateOnly startDate, 
+        long resourceId,
+        DateOnly startDate,
         DateOnly endDate,
         DateTimeOffset now)
     {
@@ -34,9 +34,9 @@ public class BookingAggregate
     public Guid CatalogRequestId { get; private set; }
 
     public static BookingAggregate Initialize(
-        long userId, 
-        long resourceId, 
-        DateOnly startDate, 
+        long userId,
+        long resourceId,
+        DateOnly startDate,
         DateOnly endDate,
         DateTimeOffset now)
     {

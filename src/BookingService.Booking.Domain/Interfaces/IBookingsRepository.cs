@@ -1,6 +1,7 @@
 ﻿using BookingService.Booking.Domain.Contracts.Models;
+using BookingService.Booking.Domain.Entities;
 
-namespace BookingService.Booking.Domain.Bookings;
+namespace BookingService.Booking.Domain.Interfaces;
 
 public interface IBookingsRepository
 {

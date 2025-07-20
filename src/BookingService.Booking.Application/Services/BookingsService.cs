@@ -4,13 +4,13 @@ using BookingService.Booking.Application.Contracts.Interfaces;
 using BookingService.Booking.Application.Contracts.Models;
 using BookingService.Booking.Application.Contracts.Queries;
 using BookingService.Booking.Application.Dates;
-using BookingService.Booking.Domain;
-using BookingService.Booking.Domain.Bookings;
 using BookingService.Booking.Domain.Contracts.Models;
+using BookingService.Booking.Domain.Entities;
+using BookingService.Booking.Domain.Interfaces;
 using BookingService.Catalog.Api.Contracts.BookingJobs;
 using BookingService.Catalog.Api.Contracts.BookingJobs.Commands;
 
-namespace BookingService.Booking.Application;
+namespace BookingService.Booking.Application.Services;
 
 internal class BookingsService : IBookingsService
 {
@@ -102,7 +102,7 @@ internal class BookingsService : IBookingsService
     public async Task<BookingStatus> GetStatusByIdAsync(GetBookingStatusByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken)
             ?? throw new ValidationException("Бронирование не найдено.");
 
         return booking.Status;
@@ -110,7 +110,7 @@ internal class BookingsService : IBookingsService
     public async Task<BookingDto> GetByIdAsync(GetBookingByIdQuery idQuery,
         CancellationToken cancellationToken)
     {
-        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken) 
+        var booking = await _bookingsRepository.GetByIdAsync(idQuery.BookingId, cancellationToken)
             ?? throw new ValidationException("Бронирование не найдено.");
 
         return new BookingDto

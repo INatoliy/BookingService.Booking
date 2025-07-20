@@ -1,10 +1,9 @@
-﻿using BookingService.Booking.Domain;
-using BookingService.Booking.Domain.Bookings;
+﻿using BookingService.Booking.Domain.Interfaces;
 using BookingService.Catalog.Api.Contracts.BookingJobs;
 using BookingService.Catalog.Api.Contracts.BookingJobs.Queries;
 using Microsoft.Extensions.Logging;
 
-namespace BookingService.Booking.Application
+namespace BookingService.Booking.Application.Services
 {
     class BookingsBackgroundServiceHandler : IBookingsBackgroundServiceHandler
     {

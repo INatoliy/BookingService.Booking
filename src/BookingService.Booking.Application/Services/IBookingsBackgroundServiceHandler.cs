@@ -1,4 +1,4 @@
-﻿namespace BookingService.Booking.Application
+﻿namespace BookingService.Booking.Application.Services
 {
     public interface IBookingsBackgroundServiceHandler
     {

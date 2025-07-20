@@ -1,4 +1,4 @@
-﻿using BookingService.Booking.Domain.Bookings;
+﻿using BookingService.Booking.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
