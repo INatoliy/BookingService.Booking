@@ -4,12 +4,14 @@ using BookingService.Booking.Application.Contracts.Commands;
 using BookingService.Booking.Application.Contracts.Interfaces;
 using BookingService.Booking.Application.Contracts.Queries;
 using BookingService.Booking.Domain.Contracts.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookingService.Booking.Api.Controllers;
 
-[Route(WebRoutes.BasePath)]
+[Authorize]
 [ApiController]
+[Route(WebRoutes.BasePath)]
 public class BookingsController : ControllerBase
 {
     private readonly IBookingsService _bookingsService;
