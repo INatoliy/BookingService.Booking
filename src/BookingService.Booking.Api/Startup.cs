@@ -6,6 +6,8 @@ using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BookingService.Booking.Api;
 
@@ -19,14 +21,24 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        var jwtSettings = Configuration.GetSection("Jwt"); // конфиг токена
         services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; // схема, которая будет использоваться по умолчанию для проверки токена.
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;   // схема, которая будет использоваться для отправки ответа, если пользователь не авторизован.
         }).AddJwtBearer(options =>
-        {
-            options.
-        })
+        {      // Настройки для проверки JWT-токена
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,                         //проверять ли, что токен выдан нужным издателем.
+                ValidateAudience = true,                       //проверять ли, что токен предназначен для нужного получателя.
+                ValidateLifetime = true,                       // проверять ли срок действия токена.
+                ValidateIssuerSigningKey = true,               //проверять ли подпись токена.
+                ValidIssuer = jwtSettings["Issuer"],           //строка, с которой сравнивается Issuer в токене.
+                ValidAudience = jwtSettings["Audience"],       //строка, с которой сравнивается Audience в токене.
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))// ключ, которым подписан токен (секретная строка, которую знаете только вы и ваш сервер).
+            };
+        });
         services.AddControllers();
         services.AddApplication(Configuration);
 
